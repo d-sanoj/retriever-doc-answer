@@ -1,0 +1,34 @@
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "retriever-doc-answer"
+version = "0.1.0"
+description = "BM25 / TF-IDF retrieval measurement as an API service"
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi>=0.115,<0.117",
+    "numpy>=1.26,<3",
+    "pydantic>=2.9,<3",
+    "pydantic-settings>=2.6,<3",
+    "uvicorn[standard]>=0.30,<0.36",
+]
+
+[project.optional-dependencies]
+dev = [
+    "httpx>=0.27,<0.29",
+    "pytest>=8.3,<9",
+    "ruff>=0.6,<0.10",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+
+[tool.ruff]
+line-length = 79
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "W"]
