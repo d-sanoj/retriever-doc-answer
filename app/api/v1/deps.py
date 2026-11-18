@@ -25,3 +25,8 @@ def get_retrieval_service(request: Request) -> RetrievalService:
 def get_evaluation_service(request: Request) -> EvaluationService:
     """Return the app-wide evaluation service."""
     return request.app.state.evaluation_service
+
+
+def get_chunking_evaluation_service(request: Request) -> EvaluationService:
+    """Return the chunking evaluation service (15-post snapshot)."""
+    return request.app.state.chunking_evaluation_service

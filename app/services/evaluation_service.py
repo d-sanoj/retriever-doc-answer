@@ -13,11 +13,16 @@ import numpy as np
 
 from app.models.corpus import Question
 from app.repositories.corpus_repository import CorpusRepository
+from app.services.chunking_service import CHUNKING_STRATEGIES
 from app.services.retrieval_service import Chunk, RetrievalService, Scorer
 
 EXCLUDED_SLUG = "retriever-finds-the-document-not-the-answer"
 CHUNK_SIZES = (100, 200, 400, 800, 0)
 CHUNK_LEVEL_SIZES = (100, 200, 400)
+# Blog folders excluded from the chunking snapshot's corpus, as recorded
+# in data/chunking/results-chunking.json: the 2026-11-16 retriever post
+# (it quotes the golden questions) and the chunking post itself.
+CHUNKING_EXCLUDED_FOLDERS = ["blog-15-11-16-2026", "blog-17-11-18-2026"]
 
 
 def _metrics(ranks: list[int | None]) -> dict:
@@ -26,9 +31,7 @@ def _metrics(ranks: list[int | None]) -> dict:
     ``ranks`` holds the 1-based gold rank per question (``None`` = not found).
     Identical to the original script's computation.
     """
-    arr = np.array(
-        [r if r is not None else 10**9 for r in ranks], dtype=float
-    )
+    arr = np.array([r if r is not None else 10**9 for r in ranks], dtype=float)
     out: dict = {}
     for k in (1, 3, 5, 10):
         out[f"recall@{k}"] = float((arr <= k).mean())
@@ -98,10 +101,16 @@ class EvaluationService:
         grading: str = "post",
         min_terms: int = 2,
         title_prepend: bool = False,
+        strategy: str | None = None,
     ) -> dict:
-        """Evaluate one configuration; returns metrics plus chunk count."""
+        """Evaluate one configuration; returns metrics plus chunk count.
+
+        With ``strategy`` set, the index is built by that chunking
+        strategy instead of fixed windows; ``chunk_size`` and
+        ``title_prepend`` are then ignored.
+        """
         chunks, scorer = self.retrieval.get_index(
-            chunk_size, title_prepend, retriever
+            chunk_size, title_prepend, retriever, strategy
         )
         questions = self.repository.load_questions()
         ranks = self._gold_ranks(
@@ -130,7 +139,7 @@ class EvaluationService:
             for i, score in ranked[:5]
         ]
 
-    def _per_question_200w(
+    def _per_question(
         self, chunks: list[Chunk], scorer: Scorer, questions: list[Question]
     ) -> list[dict]:
         rows = []
@@ -162,6 +171,11 @@ class EvaluationService:
             )
         return rows
 
+    def _per_question_200w(
+        self, chunks: list[Chunk], scorer: Scorer, questions: list[Question]
+    ) -> list[dict]:
+        return self._per_question(chunks, scorer, questions)
+
     def run_rewording(
         self,
         question_ids: list[int] | None = None,
@@ -179,8 +193,7 @@ class EvaluationService:
             q0 = by_id[item.id]
             rows = []
             for label, text in [("original", q0.q)] + [
-                (f"variant{i + 1}", v)
-                for i, v in enumerate(item.variants)
+                (f"variant{i + 1}", v) for i, v in enumerate(item.variants)
             ]:
                 ranked = self.retrieval.rank(chunks, scorer, text)
                 gold_rank = next(
@@ -323,3 +336,106 @@ class EvaluationService:
             )
         results["top5_bm25_200w"] = dump
         return results
+
+    def run_chunking_experiment(self) -> dict:
+        """Run the chunking comparison; return the results-chunking.json
+        shaped object.
+
+        Port of ``measure-chunking.py`` (2026-11-18 post): all five
+        strategies, BM25 only, post-level and chunk-level (strict, >=2
+        answer terms) grading, per-question ranks, the fixed200-vs-section
+        rewording comparison, and the top-5 dump for the section run.
+        Runs on this service's repository — the chunking snapshot
+        (15 posts, 22 questions) when wired to it in ``main.py``.
+        """
+        posts = self.repository.load_posts_with_sections()
+        questions = self.repository.load_questions()
+        total_words = sum(p["words"] for p in posts.values())
+
+        results: dict = {
+            "corpus": {
+                "posts": len(posts),
+                "words": total_words,
+                "files": sorted(posts),
+                "generated": date.today().isoformat(),
+                "excluded_folders": sorted(CHUNKING_EXCLUDED_FOLDERS),
+            },
+            "questions": len(questions),
+            "experiments": {},
+        }
+        experiments = results["experiments"]
+
+        per_question: dict[str, list[dict]] = {}
+        for strategy in CHUNKING_STRATEGIES:
+            chunks, scorer = self.retrieval.get_index(
+                200, False, "bm25", strategy=strategy
+            )
+            sizes = [len(c["text"].split()) for c in chunks]
+            median_words = int(np.median(sizes))
+            for level, chunk_level, prefix in (
+                ("post", False, ""),
+                ("chunk", True, "chunk-"),
+            ):
+                ranks = self._gold_ranks(
+                    chunks, scorer, questions, chunk_level=chunk_level
+                )
+                experiments[f"{prefix}bm25@{strategy}"] = {
+                    "chunks": len(chunks),
+                    "median_chunk_words": median_words,
+                    **_metrics(ranks),
+                }
+            per_question[strategy] = self._per_question(
+                chunks, scorer, questions
+            )
+        results["per_question"] = per_question
+
+        # Rewording: fixed200 vs section, answer-chunk rank only.
+        results["rewording"] = self._chunking_rewording(questions)
+
+        # Top-5 dump for the headline run (section), for failure analysis.
+        chunks, scorer = self.retrieval.get_index(
+            200, False, "bm25", strategy="section"
+        )
+        dump = []
+        for q in questions:
+            dump.append(
+                {
+                    "id": q.id,
+                    "q": q.q,
+                    "gold": q.gold,
+                    "top5": self._top5(chunks, scorer, q.q),
+                }
+            )
+        results["top5_bm25_section"] = dump
+        return results
+
+    def _chunking_rewording(self, questions: list[Question]) -> dict:
+        """Rewording experiment, fixed200 vs section (answer-chunk rank)."""
+        indexes: dict[str, tuple[list[Chunk], Scorer]] = {}
+        for strategy in ("fixed200", "section"):
+            indexes[strategy] = self.retrieval.get_index(
+                200, False, "bm25", strategy=strategy
+            )
+        by_id = {q.id: q for q in questions}
+        items = []
+        for item in self.repository.load_rewordings():
+            q0 = by_id[item.id]
+            rows = []
+            for label, text in [("original", q0.q)] + [
+                (f"variant{i + 1}", v) for i, v in enumerate(item.variants)
+            ]:
+                row: dict = {"label": label, "text": text}
+                for strategy in ("fixed200", "section"):
+                    chunks, scorer = indexes[strategy]
+                    ranked = self.retrieval.rank(chunks, scorer, text)
+                    row[strategy] = next(
+                        (
+                            pos
+                            for pos, (i, _) in enumerate(ranked, start=1)
+                            if is_gold_chunk(chunks[i], q0)
+                        ),
+                        None,
+                    )
+                rows.append(row)
+            items.append({"id": item.id, "gold": q0.gold, "rows": rows})
+        return {"experiment": "rewording", "items": items}

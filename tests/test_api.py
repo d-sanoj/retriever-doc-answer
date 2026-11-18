@@ -1,7 +1,6 @@
 """End-to-end API tests (TestClient) for every endpoint."""
 
 
-
 def test_health(client):
     response = client.get("/health")
     assert response.status_code == 200
@@ -21,6 +20,8 @@ def test_openapi_lists_all_routes(client):
         "/api/v1/experiments/run",
         "/api/v1/experiments/results",
         "/api/v1/experiments/rewording",
+        "/api/v1/experiments/chunking",
+        "/api/v1/experiments/chunking/results",
     ):
         assert path in paths
 
@@ -189,3 +190,80 @@ def test_experiments_run_headlines(client):
     assert len(body["per_question_200w"]) == 20
     assert len(body["rewording"]["items"]) == 6
     assert len(body["top5_bm25_200w"]) == 20
+
+
+def test_search_with_strategy(client):
+    response = client.post(
+        "/api/v1/search",
+        json={
+            "query": "How do I stop my coding agent "
+            "from ignoring style rules?",
+            "retriever": "bm25",
+            "strategy": "section",
+            "top_k": 5,
+        },
+    )
+    assert response.status_code == 200
+    body = response.json()
+    assert body["strategy"] == "section"
+    assert body["chunks_total"] > 0
+    assert len(body["results"]) == 5
+    scores = [r["score"] for r in body["results"]]
+    assert scores == sorted(scores, reverse=True)
+    assert "your-agents-code-looks-nothing-like-yours" in [
+        r["slug"] for r in body["results"]
+    ]
+
+
+def test_search_strategy_validation(client):
+    assert (
+        client.post(
+            "/api/v1/search",
+            json={"query": "x", "strategy": "sliding"},
+        ).status_code
+        == 422
+    )
+
+
+def test_evaluate_with_strategy(client):
+    response = client.post(
+        "/api/v1/evaluate",
+        json={"retriever": "bm25", "strategy": "section", "grading": "chunk"},
+    )
+    assert response.status_code == 200
+    body = response.json()
+    assert body["chunks"] > 0
+    assert len(body["gold_ranks"]) == 20  # default (14-post) corpus
+
+
+def test_chunking_experiment_run(client):
+    response = client.post("/api/v1/experiments/chunking")
+    assert response.status_code == 200
+    body = response.json()
+    assert body["corpus"]["posts"] == 15
+    assert body["corpus"]["words"] == 41375
+    assert body["questions"] == 22
+    assert body["experiments"]["chunk-bm25@section"]["recall@5"] == 20 / 22
+    assert body["experiments"]["chunk-bm25@fixed200"]["recall@5"] == 16 / 22
+    assert body["experiments"]["bm25@section"]["recall@5"] == 1.0
+    assert body["experiments"]["bm25@section"]["chunks"] == 170
+    assert set(body["per_question"]) == {
+        "fixed200",
+        "fixed400",
+        "fixed200+head",
+        "section",
+        "para200",
+    }
+    assert len(body["per_question"]["section"]) == 22
+    assert len(body["rewording"]["items"]) == 6
+    assert len(body["top5_bm25_section"]) == 22
+
+
+def test_chunking_reference_results(client):
+    response = client.get("/api/v1/experiments/chunking/results")
+    assert response.status_code == 200
+    body = response.json()
+    assert body["corpus"]["posts"] == 15
+    assert body["questions"] == 22
+    assert body["experiments"]["chunk-bm25@section"]["recall@5"] == 20 / 22
+    assert body["experiments"]["chunk-bm25@section"]["chunks"] == 170

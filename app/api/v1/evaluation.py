@@ -21,5 +21,6 @@ def evaluate(
         grading=request.grading,
         min_terms=request.min_terms,
         title_prepend=request.title_prepend,
+        strategy=request.strategy,
     )
     return EvaluationResult(**result)

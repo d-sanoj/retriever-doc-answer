@@ -1,9 +1,15 @@
-"""Experiment endpoints: full suite, reference results, rewording."""
+"""Experiment endpoints: full suite, reference results, rewording,
+chunking comparison."""
 
 from fastapi import APIRouter, Depends
 
-from app.api.v1.deps import get_evaluation_service, get_repository
+from app.api.v1.deps import (
+    get_chunking_evaluation_service,
+    get_evaluation_service,
+    get_repository,
+)
 from app.models.evaluation import (
+    ChunkingExperimentResponse,
     ExperimentRunResponse,
     RewordingRequest,
 )
@@ -45,3 +51,28 @@ def run_rewording(
         chunk_size=request.chunk_size,
         retriever=request.retriever,
     )
+
+
+@router.post("/chunking", response_model=ChunkingExperimentResponse)
+def run_chunking_experiment(
+    service: EvaluationService = Depends(get_chunking_evaluation_service),
+) -> dict:
+    """Run the chunking comparison (2026-11-18 post) and return the
+    results object.
+
+    Same shape as ``data/chunking/results-chunking.json``: corpus block,
+    per-strategy metrics (post- and chunk-level), per-question ranks,
+    the fixed200-vs-section rewording comparison, and the top-5 dump for
+    the section run. Runs on the 15-post chunking snapshot, not the
+    2026-11-16 corpus. Takes a few seconds (BM25 scoring is a
+    pure-Python loop).
+    """
+    return service.run_chunking_experiment()
+
+
+@router.get("/chunking/results")
+def get_chunking_reference_results(
+    service: EvaluationService = Depends(get_chunking_evaluation_service),
+) -> dict:
+    """The reference ``results-chunking.json`` from the chunking script."""
+    return service.repository.load_reference_results()

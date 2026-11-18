@@ -22,6 +22,17 @@ class Settings(BaseSettings):
     questions_file: Path = BASE_DIR / "data" / "questions.json"
     results_file: Path = BASE_DIR / "data" / "results.json"
 
+    # Chunking experiment snapshot (2026-11-18 post): the 15-post corpus,
+    # 22 questions, and its reference results. Kept separate from the
+    # 2026-11-16 snapshot above, which stays frozen.
+    chunking_corpus_dir: Path = BASE_DIR / "data" / "chunking" / "corpus"
+    chunking_questions_file: Path = (
+        BASE_DIR / "data" / "chunking" / "questions.json"
+    )
+    chunking_results_file: Path = (
+        BASE_DIR / "data" / "chunking" / "results-chunking.json"
+    )
+
     # Scoring defaults, identical to the original experiment script.
     bm25_k1: float = 1.5
     bm25_b: float = 0.75

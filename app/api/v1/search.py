@@ -21,12 +21,14 @@ def search(
         chunk_size=request.chunk_size,
         top_k=request.top_k,
         title_prepend=request.title_prepend,
+        strategy=request.strategy,
     )
     return SearchResponse(
         query=request.query,
         retriever=request.retriever,
         chunk_size=request.chunk_size,
         title_prepend=request.title_prepend,
+        strategy=request.strategy,
         chunks_total=chunks_total,
         results=[RankedChunk(**item) for item in results],
     )

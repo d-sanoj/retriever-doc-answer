@@ -6,6 +6,10 @@ from pydantic import BaseModel, Field
 
 RetrieverName = Literal["bm25", "tfidf"]
 
+ChunkingStrategy = Literal[
+    "fixed200", "fixed400", "fixed200+head", "section", "para200"
+]
+
 
 class SearchRequest(BaseModel):
     """Search request body for ``POST /api/v1/search``."""
@@ -17,13 +21,22 @@ class SearchRequest(BaseModel):
     chunk_size: int = Field(
         default=200,
         ge=0,
-        description="Chunk size in words; 0 means one chunk per post.",
+        description="Chunk size in words; 0 means one chunk per post. "
+        "Ignored when strategy is set.",
     )
     top_k: int = Field(default=5, ge=1, le=20, description="Chunks to return.")
     title_prepend: bool = Field(
         default=False,
         description=(
-            "Prepend the post title (slug words) to each chunk's tokens."
+            "Prepend the post title (slug words) to each chunk's tokens. "
+            "Ignored when strategy is set."
+        ),
+    )
+    strategy: ChunkingStrategy | None = Field(
+        default=None,
+        description=(
+            "Chunking strategy instead of fixed windows: fixed200, "
+            "fixed400, fixed200+head, section, or para200."
         ),
     )
 
@@ -44,5 +57,8 @@ class SearchResponse(BaseModel):
     retriever: RetrieverName
     chunk_size: int
     title_prepend: bool
+    strategy: ChunkingStrategy | None = Field(
+        default=None, description="Chunking strategy used, if any."
+    )
     chunks_total: int = Field(description="Chunks in the index.")
     results: list[RankedChunk]

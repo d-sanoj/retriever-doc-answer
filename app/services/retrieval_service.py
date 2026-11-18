@@ -11,6 +11,7 @@ import numpy as np
 from app.core.config import settings
 from app.repositories.corpus_repository import CorpusRepository
 from app.services.bm25_service import BM25
+from app.services.chunking_service import ChunkingService
 from app.services.text_service import chunk_words, tokenize
 from app.services.tfidf_service import TFIDF
 
@@ -21,8 +22,13 @@ Scorer = BM25 | TFIDF
 class RetrievalService:
     """Builds chunk indexes and ranks them for a query."""
 
-    def __init__(self, repository: CorpusRepository | None = None) -> None:
+    def __init__(
+        self,
+        repository: CorpusRepository | None = None,
+        chunking: ChunkingService | None = None,
+    ) -> None:
         self.repository = repository or CorpusRepository()
+        self.chunking = chunking or ChunkingService()
 
     @staticmethod
     def build_index(
@@ -55,10 +61,20 @@ class RetrievalService:
 
     @lru_cache(maxsize=64)
     def _index(
-        self, chunk_size: int, title_prepend: bool, retriever: str
+        self,
+        chunk_size: int,
+        title_prepend: bool,
+        retriever: str,
+        strategy: str | None = None,
     ) -> tuple[list[Chunk], Scorer]:
-        posts = self.repository.load_posts()
-        chunks = self.build_index(posts, chunk_size, title_prepend)
+        if strategy is not None:
+            # Structure-aware index: chunk size and title prepend do not
+            # apply — the strategy carries headings itself.
+            posts = self.repository.load_posts_with_sections()
+            chunks = self.chunking.build_index(posts, strategy)
+        else:
+            posts = self.repository.load_posts()
+            chunks = self.build_index(posts, chunk_size, title_prepend)
         if retriever == "bm25":
             scorer: Scorer = BM25(
                 chunks, k1=settings.bm25_k1, b=settings.bm25_b
@@ -70,10 +86,14 @@ class RetrievalService:
         return chunks, scorer
 
     def get_index(
-        self, chunk_size: int, title_prepend: bool, retriever: str
+        self,
+        chunk_size: int,
+        title_prepend: bool,
+        retriever: str,
+        strategy: str | None = None,
     ) -> tuple[list[Chunk], Scorer]:
         """Return the cached (chunks, scorer) for this configuration."""
-        return self._index(chunk_size, title_prepend, retriever)
+        return self._index(chunk_size, title_prepend, retriever, strategy)
 
     @staticmethod
     def rank(
@@ -95,9 +115,17 @@ class RetrievalService:
         chunk_size: int = 200,
         top_k: int = 5,
         title_prepend: bool = False,
+        strategy: str | None = None,
     ) -> tuple[list[dict], int]:
-        """Search the corpus; returns (ranked chunks, total chunk count)."""
-        chunks, scorer = self.get_index(chunk_size, title_prepend, retriever)
+        """Search the corpus; returns (ranked chunks, total chunk count).
+
+        With ``strategy`` set, the index is built by that chunking
+        strategy instead of fixed windows; ``chunk_size`` and
+        ``title_prepend`` are then ignored.
+        """
+        chunks, scorer = self.get_index(
+            chunk_size, title_prepend, retriever, strategy
+        )
         ranked = self.rank(chunks, scorer, query)
         results = [
             {

@@ -4,7 +4,7 @@ from typing import Literal
 
 from pydantic import BaseModel, Field
 
-from app.models.search import RetrieverName
+from app.models.search import ChunkingStrategy, RetrieverName
 
 GradingName = Literal["post", "chunk"]
 
@@ -28,6 +28,13 @@ class EvaluateRequest(BaseModel):
         description="Answer terms required for chunk-level grading.",
     )
     title_prepend: bool = Field(default=False)
+    strategy: ChunkingStrategy | None = Field(
+        default=None,
+        description=(
+            "Chunking strategy instead of fixed windows; chunk_size "
+            "and title_prepend are then ignored."
+        ),
+    )
 
 
 class EvaluationResult(BaseModel):
@@ -68,6 +75,18 @@ class ExperimentRunResponse(BaseModel):
     per_question_200w: list[dict]
     rewording: dict
     top5_bm25_200w: list[dict]
+
+
+class ChunkingExperimentResponse(BaseModel):
+    """Chunking comparison result, shaped like
+    ``data/chunking/results-chunking.json``."""
+
+    corpus: dict
+    questions: int
+    experiments: dict[str, dict]
+    per_question: dict[str, list[dict]]
+    rewording: dict
+    top5_bm25_section: list[dict]
 
 
 class RewordingRequest(BaseModel):
