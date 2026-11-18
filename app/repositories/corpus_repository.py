@@ -10,7 +10,7 @@ from pathlib import Path
 
 from app.core.config import settings
 from app.models.corpus import Question, Rewording
-from app.services.text_service import clean_markdown
+from app.services.text_service import clean_markdown, split_sections
 
 
 class CorpusRepository:
@@ -41,6 +41,31 @@ class CorpusRepository:
                 "title": path.stem,
                 "text": text,
                 "words": len(text.split()),
+            }
+        return posts
+
+    @lru_cache(maxsize=1)
+    def load_posts_with_sections(self) -> dict[str, dict]:
+        """Load every ``*.md`` post with its markdown sections.
+
+        Same posts as :meth:`load_posts`, plus a ``sections`` key: a list
+        of ``(heading, cleaned body)`` pairs, split on heading lines.
+        The first section (before any heading) has heading ``None``.
+        Structure-aware chunkers need the sections; fixed-window
+        chunkers use the plain ``text`` instead.
+        """
+        posts: dict[str, dict] = {}
+        for path in sorted(self.corpus_dir.glob("*.md")):
+            raw = path.read_text(encoding="utf-8")
+            text = clean_markdown(raw)
+            posts[path.stem] = {
+                "title": path.stem,
+                "text": text,
+                "words": len(text.split()),
+                "sections": [
+                    (heading, clean_markdown(body))
+                    for heading, body in split_sections(raw)
+                ],
             }
         return posts
 

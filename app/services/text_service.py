@@ -1,9 +1,9 @@
 """Text processing: tokenization, markdown cleaning, chunking.
 
-Faithful port of the original experiment script. The stopword list, the
+Faithful port of the original experiment scripts. The stopword list, the
 ``[a-z0-9]+`` token pattern, the markdown-cleaning rules, and the chunking
 windows are byte-for-byte the originals, so the API reproduces the
-reference ``results.json`` exactly.
+reference ``results.json`` and ``results-chunking.json`` exactly.
 """
 
 import re
@@ -23,6 +23,65 @@ needn""".split()
 )
 
 TOKEN_RE = re.compile(r"[a-z0-9]+")
+SENT_SPLIT = re.compile(r"(?<=[.!?])\s+")
+
+
+def split_sections(md: str) -> list[tuple[str | None, str]]:
+    """Split markdown into ``[(heading, body)]`` on heading lines.
+
+    The first section (before any heading) gets heading ``None``; callers
+    fall back to the post title for it. Port of the chunking script.
+    """
+    md = strip_frontmatter(md)
+    sections: list[tuple[str | None, str]] = []
+    heading, buf = None, []
+    for line in md.splitlines():
+        s = line.strip()
+        if s.startswith("#"):
+            if buf or heading is not None:
+                sections.append((heading, "\n".join(buf)))
+            heading = s.lstrip("#").strip()
+            buf = []
+        else:
+            buf.append(line)
+    sections.append((heading, "\n".join(buf)))
+    return sections
+
+
+def strip_frontmatter(md: str) -> str:
+    """Drop a leading ``---`` frontmatter block, if present."""
+    if md.startswith("---"):
+        end = md.find("\n---", 3)
+        if end != -1:
+            return md[end + 4 :]
+    return md
+
+
+def split_into_sentences(text: str) -> list[str]:
+    """Split text at sentence boundaries (after ``.``, ``!``, ``?``)."""
+    return SENT_SPLIT.split(text)
+
+
+def split_sentences(text: str, max_words: int) -> list[str]:
+    """Split text into chunks of at most ``max_words`` at sentence ends.
+
+    Sentences accumulate until the next one would overflow the cap.
+    Port of the chunking script.
+    """
+    words = text.split()
+    if len(words) <= max_words:
+        return [text]
+    out, cur = [], []
+    for sent in SENT_SPLIT.split(text):
+        sw = sent.split()
+        if len(cur) + len(sw) > max_words and cur:
+            out.append(" ".join(cur))
+            cur = sw
+        else:
+            cur.extend(sw)
+    if cur:
+        out.append(" ".join(cur))
+    return out
 
 
 def tokenize(text: str) -> list[str]:
@@ -38,10 +97,7 @@ def clean_markdown(md: str) -> str:
     table pipes into spaces; replace links with their anchor text; strip
     ``* _ ` # >`` runs; collapse whitespace.
     """
-    if md.startswith("---"):
-        end = md.find("\n---", 3)
-        if end != -1:
-            md = md[end + 4:]
+    md = strip_frontmatter(md)
     lines = []
     for line in md.splitlines():
         s = line.strip()

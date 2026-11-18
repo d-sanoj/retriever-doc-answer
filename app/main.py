@@ -12,6 +12,7 @@ from fastapi import FastAPI
 
 from app import __version__
 from app.api.v1 import router as v1_router
+from app.core.config import settings
 from app.core.logging import configure_logging, get_logger
 from app.repositories.corpus_repository import CorpusRepository
 from app.services.evaluation_service import EvaluationService
@@ -38,6 +39,24 @@ async def lifespan(app: FastAPI):
         sum(p["words"] for p in posts.values()),
         len(questions),
     )
+    # Chunking snapshot (2026-11-18 post): 15 posts, 22 questions.
+    # Separate repository so the 2026-11-16 experiment stays frozen.
+    chunking_repository = CorpusRepository(
+        corpus_dir=settings.chunking_corpus_dir,
+        questions_file=settings.chunking_questions_file,
+        results_file=settings.chunking_results_file,
+    )
+    chunking_retrieval = RetrievalService(chunking_repository)
+    app.state.chunking_evaluation_service = EvaluationService(
+        chunking_repository, chunking_retrieval
+    )
+    chunking_posts = chunking_repository.load_posts()
+    logger.info(
+        "chunking corpus loaded: %d posts, %d words, %d questions",
+        len(chunking_posts),
+        sum(p["words"] for p in chunking_posts.values()),
+        len(chunking_repository.load_questions()),
+    )
     yield
 
 
@@ -49,7 +68,10 @@ def create_app() -> FastAPI:
             "BM25 / TF-IDF retrieval measurement as an API service. "
             "Reproduces the sanoj.dev blog experiment "
             "'Your retriever finds the right document. "
-            "It doesn't always find the answer.'"
+            "It doesn't always find the answer.' "
+            "Also runs the follow-up chunking comparison from "
+            "'I chunked my blog by section. Retrieval jumped from 73% "
+            "to 91%.'"
         ),
         version=__version__,
         lifespan=lifespan,
