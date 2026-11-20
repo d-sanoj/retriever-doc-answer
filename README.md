@@ -22,6 +22,16 @@ answer-chunk recall@5 from 73% (fixed 200-word windows) to 91% — tying the
 best fixed window (400 words) with far fewer, more focused chunks. See
 [Chunking experiment](#chunking-experiment) below.
 
+The third experiment (sanoj.dev post ["Embeddings beat BM25 on my blog,
+82% to 73% — and the hybrid lost"](https://sanoj.dev/blog/embeddings-vs-bm25-measured/))
+finally tests the embedding model the first post could not: all-MiniLM-L6-v2
+against BM25 on the same golden set. On the 16-post corpus, embeddings win
+82% to 73% at 200-word chunks and tie at 400 — and the hybrid search built
+from reciprocal rank fusion (k = 60) loses to pure embeddings, 77% against
+82%. See [Embeddings experiment](#embeddings-experiment) below. It ships as
+a standalone script in `data/embeddings/`, not wired into the API — the
+service stays model-free.
+
 ## Quickstart
 
 Requires Python 3.11+.
@@ -153,6 +163,45 @@ questions, reference results) and is kept separate from the 2026-11-16
 snapshot in `data/`, which stays frozen: its 14 posts, 20 questions, and
 headline numbers are unchanged by this experiment.
 
+## Embeddings experiment
+
+The 2026-11-20 follow-up tests the embedding model the first post could
+not: `sentence-transformers/all-MiniLM-L6-v2` (384 dimensions, 22.7M
+parameters) against BM25 on the same golden set, plus a hybrid of the two
+via reciprocal rank fusion (k = 60). Corpus: 16 posts, 44,153 words, 22
+questions — the 15 from the chunking experiment plus the 2026-11-19
+commit-messages post. The snapshot lives in `data/embeddings/` (corpus,
+questions, script, reference results).
+
+Headline numbers (strict chunk-level recall@5, exact):
+
+| Chunk size | BM25 | Embeddings | Hybrid (RRF) |
+| --- | --- | --- | --- |
+| 200 words | 0.73 (16/22) | **0.82 (18/22)** | 0.77 (17/22) |
+| 400 words | 0.91 (20/22) | 0.91 (20/22) | 0.91 (20/22) |
+
+Embeddings win at 200 words by fixing the synonym failures (Q6: BM25 rank
+13 → 1, Q8: 9 → 1, Q10: 5 → 1, Q19: 6 → 1) and lose two BM25 had (Q3: 1 →
+7, Q18: 3 → 9 — both topped by the same generic intro chunk). The hybrid
+loses to pure embeddings because RRF with k = 60 is nearly flat at the top,
+so the fusion follows BM25's spread, the weaker ranker. Rewording:
+embeddings win the two plain-words paraphrases that drop the keywords
+entirely and collapse on the two that drop the meaning too (Q11's gold chunk
+falls to rank 104). At 400 words the model truncates past 256 word pieces,
+and Q20's answer terms sit past the cutoff — the 400-word tie is a tie
+despite the truncation, not because of it.
+
+Run it (needs `sentence-transformers` + `torch`, deliberately not in
+`requirements.txt` — the API service stays model-free):
+
+```bash
+pip install sentence-transformers
+python data/embeddings/measure-embeddings.py
+```
+
+It writes `data/embeddings/results.json`. Full notes in
+[`data/embeddings/README.md`](data/embeddings/README.md).
+
 ## Replicating the experiment
 
 The corpus is bundled in `data/corpus/` (the 14 sanoj.dev blog posts, frontmatter
@@ -259,6 +308,12 @@ retriever-doc-answer/
       corpus/              # 15 bundled blog posts (.md)
       questions.json       # 22 eval questions + rewording variants
       results-chunking.json# reference output of the chunking script
+    embeddings/            # 2026-11-20 snapshot (standalone script)
+      corpus/              # 16 bundled blog posts (.md)
+      questions.json       # 22 eval questions + rewording variants
+      measure-embeddings.py# BM25 vs embeddings vs RRF hybrid
+      results.json         # reference output of the embeddings script
+      README.md            # experiment notes
   tests/
     test_text_service.py  test_scorers.py  test_evaluation_service.py
     test_api.py           # TestClient end-to-end, every endpoint
