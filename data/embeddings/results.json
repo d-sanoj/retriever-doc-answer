@@ -1,0 +1,1644 @@
+{
+  "corpus": {
+    "posts": 16,
+    "words": 44153,
+    "files": [
+      "agent-commit-messages-measured",
+      "agent-tests-agree-with-bugs",
+      "claude-code-dont-ask-again-leak",
+      "claude-mem-agent-memory",
+      "claude-motion-for-pro",
+      "how-a-model-learns",
+      "how-ai-reads-a-million-tokens",
+      "how-i-built-a-portfolio-out-of-sine-waves",
+      "inkling-2-small-open-weights-wait",
+      "inside-gpt-tokenizer-vocabulary",
+      "is-opus-5-5-nerfed",
+      "qwen4-max-preview",
+      "tiny-gpt-cant-tell-jokes",
+      "weight-space-programming",
+      "why-embeddings-make-search-work",
+      "your-agents-code-looks-nothing-like-yours"
+    ],
+    "generated": "2026-11-20",
+    "excluded_folders": []
+  },
+  "questions": 22,
+  "model": {
+    "name": "sentence-transformers/all-MiniLM-L6-v2",
+    "dim": 384,
+    "load_time_s": 2.1
+  },
+  "experiments": {
+    "bm25@200w": {
+      "chunks": 281,
+      "recall@1": 0.8636363636363636,
+      "recall@3": 0.9545454545454546,
+      "recall@5": 0.9545454545454546,
+      "recall@10": 0.9545454545454546,
+      "mrr": 0.9045454545454544,
+      "median_gold_rank": 1.0,
+      "gold_ranks": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        3,
+        15,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        2,
+        1,
+        1
+      ],
+      "missed_at_5": 1,
+      "never_found": 0
+    },
+    "chunk-bm25@200w": {
+      "chunks": 281,
+      "recall@1": 0.5454545454545454,
+      "recall@3": 0.6818181818181818,
+      "recall@5": 0.7272727272727273,
+      "recall@10": 0.8636363636363636,
+      "mrr": 0.6346935673022629,
+      "median_gold_rank": 1.0,
+      "gold_ranks": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        13,
+        7,
+        9,
+        2,
+        5,
+        18,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        3,
+        6,
+        23,
+        3,
+        1
+      ],
+      "missed_at_5": 6,
+      "never_found": 0
+    },
+    "emb@200w": {
+      "chunks": 281,
+      "recall@1": 1.0,
+      "recall@3": 1.0,
+      "recall@5": 1.0,
+      "recall@10": 1.0,
+      "mrr": 1.0,
+      "median_gold_rank": 1.0,
+      "gold_ranks": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "missed_at_5": 0,
+      "never_found": 0,
+      "encode_time_s": 109.9,
+      "avg_query_ms": 342.2
+    },
+    "chunk-emb@200w": {
+      "chunks": 281,
+      "recall@1": 0.6363636363636364,
+      "recall@3": 0.8181818181818182,
+      "recall@5": 0.8181818181818182,
+      "recall@10": 1.0,
+      "mrr": 0.7484126984126983,
+      "median_gold_rank": 1.0,
+      "gold_ranks": [
+        1,
+        2,
+        7,
+        1,
+        1,
+        1,
+        2,
+        1,
+        2,
+        1,
+        9,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        9,
+        1,
+        10,
+        2,
+        1
+      ],
+      "missed_at_5": 4,
+      "never_found": 0
+    },
+    "hybrid@200w": {
+      "chunks": 281,
+      "recall@1": 0.9545454545454546,
+      "recall@3": 0.9545454545454546,
+      "recall@5": 1.0,
+      "recall@10": 1.0,
+      "mrr": 0.9659090909090909,
+      "median_gold_rank": 1.0,
+      "gold_ranks": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        4,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "missed_at_5": 0,
+      "never_found": 0
+    },
+    "chunk-hybrid@200w": {
+      "chunks": 281,
+      "recall@1": 0.5,
+      "recall@3": 0.5909090909090909,
+      "recall@5": 0.7727272727272727,
+      "recall@10": 0.9090909090909091,
+      "mrr": 0.6054924242424243,
+      "median_gold_rank": 1.5,
+      "gold_ranks": [
+        1,
+        1,
+        5,
+        1,
+        1,
+        8,
+        4,
+        6,
+        2,
+        6,
+        16,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        5,
+        3,
+        15,
+        4,
+        1
+      ],
+      "missed_at_5": 5,
+      "never_found": 0
+    },
+    "bm25@400w": {
+      "chunks": 141,
+      "recall@1": 0.9090909090909091,
+      "recall@3": 0.9545454545454546,
+      "recall@5": 1.0,
+      "recall@10": 1.0,
+      "mrr": 0.9431818181818182,
+      "median_gold_rank": 1.0,
+      "gold_ranks": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        2,
+        4,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "missed_at_5": 0,
+      "never_found": 0
+    },
+    "chunk-bm25@400w": {
+      "chunks": 141,
+      "recall@1": 0.6363636363636364,
+      "recall@3": 0.9090909090909091,
+      "recall@5": 0.9090909090909091,
+      "recall@10": 0.9545454545454546,
+      "mrr": 0.7689393939393938,
+      "median_gold_rank": 1.0,
+      "gold_ranks": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        6,
+        3,
+        1,
+        2,
+        2,
+        12,
+        1,
+        1,
+        1,
+        1,
+        2,
+        1,
+        3,
+        1,
+        1,
+        2,
+        1
+      ],
+      "missed_at_5": 2,
+      "never_found": 0
+    },
+    "emb@400w": {
+      "chunks": 141,
+      "recall@1": 1.0,
+      "recall@3": 1.0,
+      "recall@5": 1.0,
+      "recall@10": 1.0,
+      "mrr": 1.0,
+      "median_gold_rank": 1.0,
+      "gold_ranks": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "missed_at_5": 0,
+      "never_found": 0,
+      "encode_time_s": 55.3,
+      "avg_query_ms": 623.4
+    },
+    "chunk-emb@400w": {
+      "chunks": 141,
+      "recall@1": 0.6818181818181818,
+      "recall@3": 0.8636363636363636,
+      "recall@5": 0.9090909090909091,
+      "recall@10": 0.9545454545454546,
+      "mrr": 0.7766347687400319,
+      "median_gold_rank": 1.0,
+      "gold_ranks": [
+        1,
+        3,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        2,
+        1,
+        6,
+        1,
+        1,
+        1,
+        1,
+        3,
+        1,
+        5,
+        1,
+        19,
+        2,
+        1
+      ],
+      "missed_at_5": 2,
+      "never_found": 0
+    },
+    "hybrid@400w": {
+      "chunks": 141,
+      "recall@1": 0.9545454545454546,
+      "recall@3": 1.0,
+      "recall@5": 1.0,
+      "recall@10": 1.0,
+      "mrr": 0.9772727272727273,
+      "median_gold_rank": 1.0,
+      "gold_ranks": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        2,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "missed_at_5": 0,
+      "never_found": 0
+    },
+    "chunk-hybrid@400w": {
+      "chunks": 141,
+      "recall@1": 0.6363636363636364,
+      "recall@3": 0.9090909090909091,
+      "recall@5": 0.9090909090909091,
+      "recall@10": 1.0,
+      "mrr": 0.7708333333333333,
+      "median_gold_rank": 1.0,
+      "gold_ranks": [
+        1,
+        2,
+        1,
+        1,
+        1,
+        3,
+        1,
+        1,
+        2,
+        1,
+        8,
+        1,
+        1,
+        1,
+        1,
+        2,
+        1,
+        3,
+        1,
+        6,
+        2,
+        1
+      ],
+      "missed_at_5": 2,
+      "never_found": 0
+    }
+  },
+  "per_question_200w": [
+    {
+      "id": 1,
+      "gold": "your-agents-code-looks-nothing-like-yours",
+      "bm25_answer_chunk_rank": 1,
+      "emb_answer_chunk_rank": 1,
+      "hybrid_answer_chunk_rank": 1
+    },
+    {
+      "id": 2,
+      "gold": "agent-tests-agree-with-bugs",
+      "bm25_answer_chunk_rank": 1,
+      "emb_answer_chunk_rank": 2,
+      "hybrid_answer_chunk_rank": 1
+    },
+    {
+      "id": 3,
+      "gold": "claude-mem-agent-memory",
+      "bm25_answer_chunk_rank": 1,
+      "emb_answer_chunk_rank": 7,
+      "hybrid_answer_chunk_rank": 5
+    },
+    {
+      "id": 4,
+      "gold": "claude-motion-for-pro",
+      "bm25_answer_chunk_rank": 1,
+      "emb_answer_chunk_rank": 1,
+      "hybrid_answer_chunk_rank": 1
+    },
+    {
+      "id": 5,
+      "gold": "claude-code-dont-ask-again-leak",
+      "bm25_answer_chunk_rank": 1,
+      "emb_answer_chunk_rank": 1,
+      "hybrid_answer_chunk_rank": 1
+    },
+    {
+      "id": 6,
+      "gold": "is-opus-5-5-nerfed",
+      "bm25_answer_chunk_rank": 13,
+      "emb_answer_chunk_rank": 1,
+      "hybrid_answer_chunk_rank": 8
+    },
+    {
+      "id": 7,
+      "gold": "inside-gpt-tokenizer-vocabulary",
+      "bm25_answer_chunk_rank": 7,
+      "emb_answer_chunk_rank": 2,
+      "hybrid_answer_chunk_rank": 4
+    },
+    {
+      "id": 8,
+      "gold": "weight-space-programming",
+      "bm25_answer_chunk_rank": 9,
+      "emb_answer_chunk_rank": 1,
+      "hybrid_answer_chunk_rank": 6
+    },
+    {
+      "id": 9,
+      "gold": "why-embeddings-make-search-work",
+      "bm25_answer_chunk_rank": 2,
+      "emb_answer_chunk_rank": 2,
+      "hybrid_answer_chunk_rank": 2
+    },
+    {
+      "id": 10,
+      "gold": "how-a-model-learns",
+      "bm25_answer_chunk_rank": 5,
+      "emb_answer_chunk_rank": 1,
+      "hybrid_answer_chunk_rank": 6
+    },
+    {
+      "id": 11,
+      "gold": "how-ai-reads-a-million-tokens",
+      "bm25_answer_chunk_rank": 18,
+      "emb_answer_chunk_rank": 9,
+      "hybrid_answer_chunk_rank": 16
+    },
+    {
+      "id": 12,
+      "gold": "how-i-built-a-portfolio-out-of-sine-waves",
+      "bm25_answer_chunk_rank": 1,
+      "emb_answer_chunk_rank": 1,
+      "hybrid_answer_chunk_rank": 1
+    },
+    {
+      "id": 13,
+      "gold": "inside-gpt-tokenizer-vocabulary",
+      "bm25_answer_chunk_rank": 1,
+      "emb_answer_chunk_rank": 1,
+      "hybrid_answer_chunk_rank": 1
+    },
+    {
+      "id": 14,
+      "gold": "inkling-2-small-open-weights-wait",
+      "bm25_answer_chunk_rank": 1,
+      "emb_answer_chunk_rank": 1,
+      "hybrid_answer_chunk_rank": 1
+    },
+    {
+      "id": 15,
+      "gold": "qwen4-max-preview",
+      "bm25_answer_chunk_rank": 1,
+      "emb_answer_chunk_rank": 1,
+      "hybrid_answer_chunk_rank": 1
+    },
+    {
+      "id": 16,
+      "gold": "agent-tests-agree-with-bugs",
+      "bm25_answer_chunk_rank": 1,
+      "emb_answer_chunk_rank": 1,
+      "hybrid_answer_chunk_rank": 1
+    },
+    {
+      "id": 17,
+      "gold": "why-embeddings-make-search-work",
+      "bm25_answer_chunk_rank": 1,
+      "emb_answer_chunk_rank": 1,
+      "hybrid_answer_chunk_rank": 1
+    },
+    {
+      "id": 18,
+      "gold": "claude-mem-agent-memory",
+      "bm25_answer_chunk_rank": 3,
+      "emb_answer_chunk_rank": 9,
+      "hybrid_answer_chunk_rank": 5
+    },
+    {
+      "id": 19,
+      "gold": "inside-gpt-tokenizer-vocabulary",
+      "bm25_answer_chunk_rank": 6,
+      "emb_answer_chunk_rank": 1,
+      "hybrid_answer_chunk_rank": 3
+    },
+    {
+      "id": 20,
+      "gold": "is-opus-5-5-nerfed",
+      "bm25_answer_chunk_rank": 23,
+      "emb_answer_chunk_rank": 10,
+      "hybrid_answer_chunk_rank": 15
+    },
+    {
+      "id": 21,
+      "gold": "tiny-gpt-cant-tell-jokes",
+      "bm25_answer_chunk_rank": 3,
+      "emb_answer_chunk_rank": 2,
+      "hybrid_answer_chunk_rank": 4
+    },
+    {
+      "id": 22,
+      "gold": "tiny-gpt-cant-tell-jokes",
+      "bm25_answer_chunk_rank": 1,
+      "emb_answer_chunk_rank": 1,
+      "hybrid_answer_chunk_rank": 1
+    }
+  ],
+  "per_question_400w": [
+    {
+      "id": 1,
+      "gold": "your-agents-code-looks-nothing-like-yours",
+      "bm25_answer_chunk_rank": 1,
+      "emb_answer_chunk_rank": 1,
+      "hybrid_answer_chunk_rank": 1
+    },
+    {
+      "id": 2,
+      "gold": "agent-tests-agree-with-bugs",
+      "bm25_answer_chunk_rank": 1,
+      "emb_answer_chunk_rank": 3,
+      "hybrid_answer_chunk_rank": 2
+    },
+    {
+      "id": 3,
+      "gold": "claude-mem-agent-memory",
+      "bm25_answer_chunk_rank": 1,
+      "emb_answer_chunk_rank": 1,
+      "hybrid_answer_chunk_rank": 1
+    },
+    {
+      "id": 4,
+      "gold": "claude-motion-for-pro",
+      "bm25_answer_chunk_rank": 1,
+      "emb_answer_chunk_rank": 1,
+      "hybrid_answer_chunk_rank": 1
+    },
+    {
+      "id": 5,
+      "gold": "claude-code-dont-ask-again-leak",
+      "bm25_answer_chunk_rank": 1,
+      "emb_answer_chunk_rank": 1,
+      "hybrid_answer_chunk_rank": 1
+    },
+    {
+      "id": 6,
+      "gold": "is-opus-5-5-nerfed",
+      "bm25_answer_chunk_rank": 6,
+      "emb_answer_chunk_rank": 1,
+      "hybrid_answer_chunk_rank": 3
+    },
+    {
+      "id": 7,
+      "gold": "inside-gpt-tokenizer-vocabulary",
+      "bm25_answer_chunk_rank": 3,
+      "emb_answer_chunk_rank": 1,
+      "hybrid_answer_chunk_rank": 1
+    },
+    {
+      "id": 8,
+      "gold": "weight-space-programming",
+      "bm25_answer_chunk_rank": 1,
+      "emb_answer_chunk_rank": 1,
+      "hybrid_answer_chunk_rank": 1
+    },
+    {
+      "id": 9,
+      "gold": "why-embeddings-make-search-work",
+      "bm25_answer_chunk_rank": 2,
+      "emb_answer_chunk_rank": 2,
+      "hybrid_answer_chunk_rank": 2
+    },
+    {
+      "id": 10,
+      "gold": "how-a-model-learns",
+      "bm25_answer_chunk_rank": 2,
+      "emb_answer_chunk_rank": 1,
+      "hybrid_answer_chunk_rank": 1
+    },
+    {
+      "id": 11,
+      "gold": "how-ai-reads-a-million-tokens",
+      "bm25_answer_chunk_rank": 12,
+      "emb_answer_chunk_rank": 6,
+      "hybrid_answer_chunk_rank": 8
+    },
+    {
+      "id": 12,
+      "gold": "how-i-built-a-portfolio-out-of-sine-waves",
+      "bm25_answer_chunk_rank": 1,
+      "emb_answer_chunk_rank": 1,
+      "hybrid_answer_chunk_rank": 1
+    },
+    {
+      "id": 13,
+      "gold": "inside-gpt-tokenizer-vocabulary",
+      "bm25_answer_chunk_rank": 1,
+      "emb_answer_chunk_rank": 1,
+      "hybrid_answer_chunk_rank": 1
+    },
+    {
+      "id": 14,
+      "gold": "inkling-2-small-open-weights-wait",
+      "bm25_answer_chunk_rank": 1,
+      "emb_answer_chunk_rank": 1,
+      "hybrid_answer_chunk_rank": 1
+    },
+    {
+      "id": 15,
+      "gold": "qwen4-max-preview",
+      "bm25_answer_chunk_rank": 1,
+      "emb_answer_chunk_rank": 1,
+      "hybrid_answer_chunk_rank": 1
+    },
+    {
+      "id": 16,
+      "gold": "agent-tests-agree-with-bugs",
+      "bm25_answer_chunk_rank": 2,
+      "emb_answer_chunk_rank": 3,
+      "hybrid_answer_chunk_rank": 2
+    },
+    {
+      "id": 17,
+      "gold": "why-embeddings-make-search-work",
+      "bm25_answer_chunk_rank": 1,
+      "emb_answer_chunk_rank": 1,
+      "hybrid_answer_chunk_rank": 1
+    },
+    {
+      "id": 18,
+      "gold": "claude-mem-agent-memory",
+      "bm25_answer_chunk_rank": 3,
+      "emb_answer_chunk_rank": 5,
+      "hybrid_answer_chunk_rank": 3
+    },
+    {
+      "id": 19,
+      "gold": "inside-gpt-tokenizer-vocabulary",
+      "bm25_answer_chunk_rank": 1,
+      "emb_answer_chunk_rank": 1,
+      "hybrid_answer_chunk_rank": 1
+    },
+    {
+      "id": 20,
+      "gold": "is-opus-5-5-nerfed",
+      "bm25_answer_chunk_rank": 1,
+      "emb_answer_chunk_rank": 19,
+      "hybrid_answer_chunk_rank": 6
+    },
+    {
+      "id": 21,
+      "gold": "tiny-gpt-cant-tell-jokes",
+      "bm25_answer_chunk_rank": 2,
+      "emb_answer_chunk_rank": 2,
+      "hybrid_answer_chunk_rank": 2
+    },
+    {
+      "id": 22,
+      "gold": "tiny-gpt-cant-tell-jokes",
+      "bm25_answer_chunk_rank": 1,
+      "emb_answer_chunk_rank": 1,
+      "hybrid_answer_chunk_rank": 1
+    }
+  ],
+  "rewording": {
+    "experiment": "rewording",
+    "chunk_size": "200w",
+    "items": [
+      {
+        "id": 1,
+        "gold": "your-agents-code-looks-nothing-like-yours",
+        "rows": [
+          {
+            "label": "original",
+            "text": "How do I stop my coding agent from ignoring my team's style rules?",
+            "bm25_answer_chunk_rank": 1,
+            "emb_answer_chunk_rank": 1,
+            "hybrid_answer_chunk_rank": 1
+          },
+          {
+            "label": "variant1",
+            "text": "coding agent style rules ignored",
+            "bm25_answer_chunk_rank": 1,
+            "emb_answer_chunk_rank": 2,
+            "hybrid_answer_chunk_rank": 1
+          },
+          {
+            "label": "variant2",
+            "text": "My AI helper writes code that doesn't match how our team writes. How do I make it stick?",
+            "bm25_answer_chunk_rank": 4,
+            "emb_answer_chunk_rank": 1,
+            "hybrid_answer_chunk_rank": 2
+          }
+        ]
+      },
+      {
+        "id": 5,
+        "gold": "claude-code-dont-ask-again-leak",
+        "rows": [
+          {
+            "label": "original",
+            "text": "I clicked 'don't ask again' in Claude Code and now my API keys might be on GitHub. What happened?",
+            "bm25_answer_chunk_rank": 1,
+            "emb_answer_chunk_rank": 1,
+            "hybrid_answer_chunk_rank": 1
+          },
+          {
+            "label": "variant1",
+            "text": "Claude Code don't ask again secret leak GitHub",
+            "bm25_answer_chunk_rank": 1,
+            "emb_answer_chunk_rank": 1,
+            "hybrid_answer_chunk_rank": 1
+          },
+          {
+            "label": "variant2",
+            "text": "I told Claude Code to stop asking for approval and now I'm worried my credentials leaked. What should I check?",
+            "bm25_answer_chunk_rank": 5,
+            "emb_answer_chunk_rank": 1,
+            "hybrid_answer_chunk_rank": 3
+          }
+        ]
+      },
+      {
+        "id": 9,
+        "gold": "why-embeddings-make-search-work",
+        "rows": [
+          {
+            "label": "original",
+            "text": "Why does search work better when words are turned into vectors?",
+            "bm25_answer_chunk_rank": 2,
+            "emb_answer_chunk_rank": 2,
+            "hybrid_answer_chunk_rank": 2
+          },
+          {
+            "label": "variant1",
+            "text": "embeddings vs keyword search semantic meaning",
+            "bm25_answer_chunk_rank": 2,
+            "emb_answer_chunk_rank": 4,
+            "hybrid_answer_chunk_rank": 2
+          },
+          {
+            "label": "variant2",
+            "text": "Why does matching word meanings work better than matching exact words?",
+            "bm25_answer_chunk_rank": 1,
+            "emb_answer_chunk_rank": 2,
+            "hybrid_answer_chunk_rank": 1
+          }
+        ]
+      },
+      {
+        "id": 3,
+        "gold": "claude-mem-agent-memory",
+        "rows": [
+          {
+            "label": "original",
+            "text": "My AI assistant remembers nothing between sessions. Is there a way to give it memory, and what does it cost?",
+            "bm25_answer_chunk_rank": 1,
+            "emb_answer_chunk_rank": 7,
+            "hybrid_answer_chunk_rank": 5
+          },
+          {
+            "label": "variant1",
+            "text": "agent memory across sessions cost tokens",
+            "bm25_answer_chunk_rank": 2,
+            "emb_answer_chunk_rank": 5,
+            "hybrid_answer_chunk_rank": 6
+          },
+          {
+            "label": "variant2",
+            "text": "Can an AI coding helper remember what we did yesterday?",
+            "bm25_answer_chunk_rank": 20,
+            "emb_answer_chunk_rank": 29,
+            "hybrid_answer_chunk_rank": 14
+          }
+        ]
+      },
+      {
+        "id": 7,
+        "gold": "inside-gpt-tokenizer-vocabulary",
+        "rows": [
+          {
+            "label": "original",
+            "text": "How do I know if the tokenizer is charging me extra for non-English text?",
+            "bm25_answer_chunk_rank": 7,
+            "emb_answer_chunk_rank": 2,
+            "hybrid_answer_chunk_rank": 4
+          },
+          {
+            "label": "variant1",
+            "text": "tokenizer non-English cost premium",
+            "bm25_answer_chunk_rank": 1,
+            "emb_answer_chunk_rank": 2,
+            "hybrid_answer_chunk_rank": 1
+          },
+          {
+            "label": "variant2",
+            "text": "Does it cost more tokens to write in Hindi than in English?",
+            "bm25_answer_chunk_rank": 3,
+            "emb_answer_chunk_rank": 4,
+            "hybrid_answer_chunk_rank": 3
+          }
+        ]
+      },
+      {
+        "id": 11,
+        "gold": "how-ai-reads-a-million-tokens",
+        "rows": [
+          {
+            "label": "original",
+            "text": "What happens inside a model when it reads a million tokens of context?",
+            "bm25_answer_chunk_rank": 18,
+            "emb_answer_chunk_rank": 9,
+            "hybrid_answer_chunk_rank": 16
+          },
+          {
+            "label": "variant1",
+            "text": "million token context window attention cost",
+            "bm25_answer_chunk_rank": 3,
+            "emb_answer_chunk_rank": 3,
+            "hybrid_answer_chunk_rank": 2
+          },
+          {
+            "label": "variant2",
+            "text": "What breaks when you paste a whole book into a chatbot?",
+            "bm25_answer_chunk_rank": 12,
+            "emb_answer_chunk_rank": 104,
+            "hybrid_answer_chunk_rank": 26
+          }
+        ]
+      }
+    ]
+  },
+  "top5_emb_200w": [
+    {
+      "id": 1,
+      "q": "How do I stop my coding agent from ignoring my team's style rules?",
+      "gold": "your-agents-code-looks-nothing-like-yours",
+      "top5": [
+        {
+          "slug": "your-agents-code-looks-nothing-like-yours",
+          "score": 0.545,
+          "preview": "fixture repo, extracts its conventions, and checks two deliberately bad files and one advisory-only file against them \u2014 21 assertions, all p"
+        },
+        {
+          "slug": "your-agents-code-looks-nothing-like-yours",
+          "score": 0.513,
+          "preview": "The first week with a coding agent is impressive. By the third week, the review comments start repeating: \"we don't use that logger here\", \""
+        },
+        {
+          "slug": "your-agents-code-looks-nothing-like-yours",
+          "score": 0.471,
+          "preview": "pattern is either a deliberate exception to record \u2014 the hand-written build script, the framework-dictated filename \u2014 or the first thing to "
+        },
+        {
+          "slug": "your-agents-code-looks-nothing-like-yours",
+          "score": 0.448,
+          "preview": "name things, how most apps lay out components, which HTTP client most people reach for. Your team's conventions are, almost by definition, t"
+        },
+        {
+          "slug": "your-agents-code-looks-nothing-like-yours",
+          "score": 0.444,
+          "preview": "the weakest channel there is, and there is a good ranking of why. One write-up of this exact problem orders enforcement mechanisms by how ha"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "q": "Why does my agent keep writing tests that pass even when the code is broken?",
+      "gold": "agent-tests-agree-with-bugs",
+      "top5": [
+        {
+          "slug": "agent-tests-agree-with-bugs",
+          "score": 0.65,
+          "preview": "apply to the fixed code: the fix removed the exact lines they targeted (the two <= boundaries and the expiry comparison), and the script rep"
+        },
+        {
+          "slug": "agent-tests-agree-with-bugs",
+          "score": 0.643,
+          "preview": "unit tests green while a motor ran away; tests written to match the code locked in two bugs. - Claude Code issue 7074 \u2014 \"Claude Code manipul"
+        },
+        {
+          "slug": "agent-tests-agree-with-bugs",
+          "score": 0.631,
+          "preview": "at a time, and counted how many breaks the suite noticed. Seven. The three it missed were all in the same function \u2014 the one the tests only "
+        },
+        {
+          "slug": "agent-tests-agree-with-bugs",
+          "score": 0.617,
+          "preview": "more had no coverage at all. He also found 62 tests that only checked the source text of the file, and 139 assertions that merely checked a "
+        },
+        {
+          "slug": "agent-tests-agree-with-bugs",
+          "score": 0.599,
+          "preview": "The bench log said 0 rpm. The motor was running away, accelerating to its maximum \u2014 and every unit test was green. That is an engineer descr"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "q": "My AI assistant remembers nothing between sessions. Is there a way to give it memory, and what does it cost?",
+      "gold": "claude-mem-agent-memory",
+      "top5": [
+        {
+          "slug": "claude-mem-agent-memory",
+          "score": 0.584,
+          "preview": "OpenCode, and eleven other agents \u2014 a memory that survives between sessions. It has more than 115,000 stars on GitHub, it topped GitHub's da"
+        },
+        {
+          "slug": "claude-mem-agent-memory",
+          "score": 0.43,
+          "preview": "a column: a new session opens with a short index of past decisions and fixes, the agent reads only the details it needs, and the work gets d"
+        },
+        {
+          "slug": "claude-mem-agent-memory",
+          "score": 0.388,
+          "preview": "/compact command and a resume flag, but those are manual, per-session, and they still hand the model a wall of raw transcript rather than th"
+        },
+        {
+          "slug": "claude-mem-agent-memory",
+          "score": 0.379,
+          "preview": "Second, turn on secret redaction before your first real session. In ~/.claude-mem/settings.json : { \"CLAUDE MEM REDACT ENABLED\": \"true\", \"CL"
+        },
+        {
+          "slug": "claude-mem-agent-memory",
+          "score": 0.377,
+          "preview": "Picture it: on Monday you fix a login bug with Claude Code. You decide together that card payments come before bank transfer in the checkout"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "q": "Can I use Claude Motion on the Pro plan, or is it really Team-only?",
+      "gold": "claude-motion-for-pro",
+      "top5": [
+        {
+          "slug": "claude-motion-for-pro",
+          "score": 0.613,
+          "preview": "the paywall. It is whether the feature is really a feature, or just code \u2014 and if it is just code, whose machine it can run on. Sources - An"
+        },
+        {
+          "slug": "claude-motion-for-pro",
+          "score": 0.564,
+          "preview": "On October 8, Anthropic launched Claude Motion, and the idea is genuinely good. You describe an animation \u2014 a quarterly report as a 30-secon"
+        },
+        {
+          "slug": "claude-motion-for-pro",
+          "score": 0.541,
+          "preview": "seat a month annual, $25 monthly), no separate Motion fee, Motion counts toward plan usage limits. - Zemith, Claude Motion Graphics \u2014 Team s"
+        },
+        {
+          "slug": "claude-motion-for-pro",
+          "score": 0.517,
+          "preview": "any Claude Code plan.\" It is four skills for Claude Code that turn work you already do into short films: an animated explainer as a web page"
+        },
+        {
+          "slug": "claude-motion-for-pro",
+          "score": 0.505,
+          "preview": "to animated explainers is $17\u2013$20 a month, and the official route is a Team plan at $40 a month on annual billing, $50 month-to-month, for t"
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "q": "I clicked 'don't ask again' in Claude Code and now my API keys might be on GitHub. What happened?",
+      "gold": "claude-code-dont-ask-again-leak",
+      "top5": [
+        {
+          "slug": "claude-code-dont-ask-again-leak",
+          "score": 0.594,
+          "preview": "Every time you click \"Yes, and don't ask again\" in Claude Code, you are saving a rule. The rule is the exact command you approved, word for "
+        },
+        {
+          "slug": "claude-code-dont-ask-again-leak",
+          "score": 0.513,
+          "preview": "ago None of this is new to Anthropic. A bug report filed on August 11, 2025 described exactly this: approved commands with API keys and toke"
+        },
+        {
+          "slug": "claude-code-dont-ask-again-leak",
+          "score": 0.475,
+          "preview": "terminal prompt shows Claude proposing a database command with a password in it. Second, the permission prompt with \"Yes, and don't ask agai"
+        },
+        {
+          "slug": "claude-code-dont-ask-again-leak",
+          "score": 0.474,
+          "preview": "takes thirty seconds, and it is the only check that cannot be delegated to a scanner that does not know what to look for. Sources - Apiiro, "
+        },
+        {
+          "slug": "claude-code-dont-ask-again-leak",
+          "score": 0.442,
+          "preview": "not land alone. The same week, two other Claude Code stories topped Hacker News: Goldman Sachs is pulling Claude Code from its bankers and t"
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "q": "How can I tell if my model got worse after an update? Is there a way to measure it?",
+      "gold": "is-opus-5-5-nerfed",
+      "top5": [
+        {
+          "slug": "is-opus-5-5-nerfed",
+          "score": 0.402,
+          "preview": "the model or effort changed, whether any task file changed, re-run once, and then switch to your fallback model and re-run. Only after all f"
+        },
+        {
+          "slug": "weight-space-programming",
+          "score": 0.397,
+          "preview": "get confusable \u2014 but it's not a mirage. If it holds up at larger scales, it gives interpretability a new tool: auditing a model by reading i"
+        },
+        {
+          "slug": "is-opus-5-5-nerfed",
+          "score": 0.394,
+          "preview": "leaves that work out, and then you pay again to correct it. The retry right after a correction was itself corrected 41.5% of the time, again"
+        },
+        {
+          "slug": "is-opus-5-5-nerfed",
+          "score": 0.379,
+          "preview": "changes: a default effort cut from high to medium, a caching bug that repeatedly cleared prior thinking, and a system-prompt change to limit"
+        },
+        {
+          "slug": "is-opus-5-5-nerfed",
+          "score": 0.365,
+          "preview": "only the bottom layer is supposed to stay frozen; a change in any of the other three feels exactly like a nerf. What a drop means, and what "
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "q": "How do I know if the tokenizer is charging me extra for non-English text?",
+      "gold": "inside-gpt-tokenizer-vocabulary",
+      "top5": [
+        {
+          "slug": "inside-gpt-tokenizer-vocabulary",
+          "score": 0.669,
+          "preview": "If you serve users who do not write in English: measure your own corpus with the tokenizer you actually ship. The library is small \u2014 tiktoke"
+        },
+        {
+          "slug": "inside-gpt-tokenizer-vocabulary",
+          "score": 0.568,
+          "preview": "1.6 times the tokens in Italian, 3 times in Arabic, and up to 15 times in Shan, on the ChatGPT/GPT-4 tokenizer. My numbers land in the same "
+        },
+        {
+          "slug": "inside-gpt-tokenizer-vocabulary",
+          "score": 0.558,
+          "preview": "at the last row. Amharic still costs 206 tokens for a sentence English says in 33 \u2014 more than six times as much. And the raw character count"
+        },
+        {
+          "slug": "inside-gpt-tokenizer-vocabulary",
+          "score": 0.547,
+          "preview": "and the counter falls to 81. The labels are said once, and position does the rest. What to do about it None of this is a reason to stop usin"
+        },
+        {
+          "slug": "inside-gpt-tokenizer-vocabulary",
+          "score": 0.54,
+          "preview": "35%. English word fragments are still the biggest single bucket, at 106,934 entries, but they are no longer the overwhelming majority. That "
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "q": "What does it mean to edit a model's weights directly, without retraining?",
+      "gold": "weight-space-programming",
+      "top5": [
+        {
+          "slug": "weight-space-programming",
+          "score": 0.501,
+          "preview": "model read another model's mind. Just that the frontier moved, quietly, into a place nobody expected it to go \u2014 inside the numbers themselve"
+        },
+        {
+          "slug": "weight-space-programming",
+          "score": 0.477,
+          "preview": "You can download the edited model and try it yourself, and there's a live demo on the model card that shows the base model looping while the"
+        },
+        {
+          "slug": "weight-space-programming",
+          "score": 0.461,
+          "preview": "the weights. A frontier model has hundreds of billions of them. Even a tiny one has millions. And the numbers don't come with labels. Starin"
+        },
+        {
+          "slug": "weight-space-programming",
+          "score": 0.45,
+          "preview": "all four attempts. It only succeeded once it was allowed to look at attention patterns while both models were run on texts it wrote itself. "
+        },
+        {
+          "slug": "weight-space-programming",
+          "score": 0.429,
+          "preview": "weights alone, without running them. There's a telling detail here: Astra drew each shape as an outline , even though the models actually ge"
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "q": "Why does search work better when words are turned into vectors?",
+      "gold": "why-embeddings-make-search-work",
+      "top5": [
+        {
+          "slug": "why-embeddings-make-search-work",
+          "score": 0.666,
+          "preview": "vectors get nudged closer. 4. After many examples, clusters appear \u2014 animals, vehicles, people. 5. Classic demo: king \u2212 man + woman \u2248 queen "
+        },
+        {
+          "slug": "why-embeddings-make-search-work",
+          "score": 0.594,
+          "preview": "sparse vectors and BM25 Before we talk about neural nets, it helps to respect what keyword search already does well. Imagine every document "
+        },
+        {
+          "slug": "why-embeddings-make-search-work",
+          "score": 0.593,
+          "preview": "in. Once meaning has coordinates, search stops being only string matching and starts being nearest-neighbor lookup. That single move explain"
+        },
+        {
+          "slug": "why-embeddings-make-search-work",
+          "score": 0.581,
+          "preview": "Type \"bad guy in lord of the rings\" into a search box that only understands keywords, and you are gambling that the right page literally con"
+        },
+        {
+          "slug": "why-embeddings-make-search-work",
+          "score": 0.526,
+          "preview": "correlates with the similarity signal we trained for.\" If that signal matches your users' intent, search feels magical. If it does not, you "
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "q": "How does a language model actually learn from data \u2014 what's happening during training?",
+      "gold": "how-a-model-learns",
+      "top5": [
+        {
+          "slug": "how-a-model-learns",
+          "score": 0.543,
+          "preview": "When people say a model \"learned\" something, it sounds mysterious. It isn't magic, and it isn't the same thing as the model answering your q"
+        },
+        {
+          "slug": "how-a-model-learns",
+          "score": 0.498,
+          "preview": "A model is a function with knobs. Call the knobs parameters and write them as a big vector w (weights, biases, and whatever else is trainabl"
+        },
+        {
+          "slug": "how-a-model-learns",
+          "score": 0.489,
+          "preview": "what a framework does, automatically, for every parameter at once. What this does not explain (yet) Gradient descent answers \"how do the kno"
+        },
+        {
+          "slug": "how-ai-reads-a-million-tokens",
+          "score": 0.466,
+          "preview": "a lot of what looks like understanding falls out of it. Andrej Karpathy's Let's build GPT video builds exactly this loop from scratch in cod"
+        },
+        {
+          "slug": "inside-gpt-tokenizer-vocabulary",
+          "score": 0.462,
+          "preview": "than in English \u2014 check out against my numbers, and I'll say where my sample is too small to stand on its own. What a vocabulary actually is"
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "q": "What happens inside a model when it reads a million tokens of context?",
+      "gold": "how-ai-reads-a-million-tokens",
+      "top5": [
+        {
+          "slug": "how-ai-reads-a-million-tokens",
+          "score": 0.69,
+          "preview": "This morning Baidu put out a new open model called ERNIE-5.5-Flash-Base, with the weights up on Hugging Face. The headline numbers are the k"
+        },
+        {
+          "slug": "inkling-2-small-open-weights-wait",
+          "score": 0.585,
+          "preview": "it has a variable-effort setting \u2014 you can dial how long it thinks before answering. The context window is listed at 1 million tokens, the s"
+        },
+        {
+          "slug": "inside-gpt-tokenizer-vocabulary",
+          "score": 0.584,
+          "preview": "than in English \u2014 check out against my numbers, and I'll say where my sample is too small to stand on its own. What a vocabulary actually is"
+        },
+        {
+          "slug": "how-ai-reads-a-million-tokens",
+          "score": 0.574,
+          "preview": "might track grammar, another who-did-what), and it repeats the whole thing across dozens of layers. ERNIE 5.5 Flash, for example, has 43 tra"
+        },
+        {
+          "slug": "inkling-2-small-open-weights-wait",
+          "score": 0.567,
+          "preview": "the work at any moment. In each of its 48 layers, each token is routed to 8 of 384 experts. Each token is sent to 8 of 384 experts. The expe"
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "q": "How was this portfolio website built out of sine waves?",
+      "gold": "how-i-built-a-portfolio-out-of-sine-waves",
+      "top5": [
+        {
+          "slug": "how-i-built-a-portfolio-out-of-sine-waves",
+          "score": 0.642,
+          "preview": "the fun part. The part that makes the site actually work is much duller, and it is the part I am proudest of: there is exactly one place whe"
+        },
+        {
+          "slug": "how-i-built-a-portfolio-out-of-sine-waves",
+          "score": 0.635,
+          "preview": "part that surprised me most. The finished sine page, if you shipped it naively, would be about a megabyte of wave data \u2014 a copy of the sine "
+        },
+        {
+          "slug": "how-i-built-a-portfolio-out-of-sine-waves",
+          "score": 0.601,
+          "preview": "words. And underneath all of it sits one idea, stated plainly at the start of the video: any image, sound, or motion can be built by adding "
+        },
+        {
+          "slug": "how-i-built-a-portfolio-out-of-sine-waves",
+          "score": 0.56,
+          "preview": "instead of a ~1 MB page of wave copies. And for scale, the video that started all of this: Crow Sign is 455 KB, roughly eleven times smaller"
+        },
+        {
+          "slug": "how-i-built-a-portfolio-out-of-sine-waves",
+          "score": 0.55,
+          "preview": "live in one place because there is nowhere else for them to live. The page ships as a recipe because the waves are too heavy to ship as a pi"
+        }
+      ]
+    },
+    {
+      "id": 13,
+      "q": "What's the cheapest way to send tabular data to an API without wasting tokens?",
+      "gold": "inside-gpt-tokenizer-vocabulary",
+      "top5": [
+        {
+          "slug": "inside-gpt-tokenizer-vocabulary",
+          "score": 0.454,
+          "preview": "and the counter falls to 81. The labels are said once, and position does the rest. What to do about it None of this is a reason to stop usin"
+        },
+        {
+          "slug": "claude-mem-agent-memory",
+          "score": 0.33,
+          "preview": "$1 per million input tokens; counted from the author's own 27 sessions, September 14 to October 16, 2026. (That $0.22 is at the Haiku 4.5 ra"
+        },
+        {
+          "slug": "inside-gpt-tokenizer-vocabulary",
+          "score": 0.296,
+          "preview": "up never got merged at all, and has to be spelled out byte by byte. So the contents of the list decide, before any model is involved, how ma"
+        },
+        {
+          "slug": "inside-gpt-tokenizer-vocabulary",
+          "score": 0.29,
+          "preview": "30% more than plain sentences and more than twice CSV. The Markdown table beats the sentences by 17%. Why? Look at what the formats repeat. "
+        },
+        {
+          "slug": "claude-mem-agent-memory",
+          "score": 0.29,
+          "preview": "the observer, which at Haiku 5.5's $0.10 per million input tokens is about $0.02 of observer input per session. That figure covers the tool "
+        }
+      ]
+    },
+    {
+      "id": 14,
+      "q": "Is there a small open model that can do useful work on its own for hours?",
+      "gold": "inkling-2-small-open-weights-wait",
+      "top5": [
+        {
+          "slug": "inkling-2-small-open-weights-wait",
+          "score": 0.396,
+          "preview": "just more slowly than anyone hoped. Sources The news - Thinking Machines Lab, \"Introducing Inkling 2 Small\" (November 5, 2026): <https://thi"
+        },
+        {
+          "slug": "inkling-2-small-open-weights-wait",
+          "score": 0.373,
+          "preview": "starting point for a lot of people building with open models. But the thing to watch is not really the score. It is the release itself. The "
+        },
+        {
+          "slug": "inkling-2-small-open-weights-wait",
+          "score": 0.368,
+          "preview": "It is, by that measure, slow and expensive per answer. Speed and cost are part of what a model is, not footnotes to it. And the honest limit"
+        },
+        {
+          "slug": "inkling-2-small-open-weights-wait",
+          "score": 0.365,
+          "preview": "budget of over 4\u00d710\u00b2\u00b3 FLOPs. The previous generation split its reasoning and agentic training into separate runs and stitched them together "
+        },
+        {
+          "slug": "inkling-2-small-open-weights-wait",
+          "score": 0.329,
+          "preview": "Yesterday, Thinking Machines Lab released its best model yet. It's called Inkling 2 Small, and on the headline score it is a big jump: 31 on"
+        }
+      ]
+    },
+    {
+      "id": 15,
+      "q": "What is Qwen4-Max and how long is it available?",
+      "gold": "qwen4-max-preview",
+      "top5": [
+        {
+          "slug": "qwen4-max-preview",
+          "score": 0.698,
+          "preview": "flagship in production today, Qwen3.8-Max is the one with a published price and pay-as-you-go access. The dates that matter are November 25,"
+        },
+        {
+          "slug": "qwen4-max-preview",
+          "score": 0.661,
+          "preview": "of November 11, so there is nothing to self-host or fine-tune. - No full release date. The rest of the Qwen4 family \u2014 Qwen4-Plus, Qwen4-Flas"
+        },
+        {
+          "slug": "qwen4-max-preview",
+          "score": 0.652,
+          "preview": "in Preview \u2014 discussion thread, November 11. - Yotta Labs, Qwen 4: Release Date, Qwen4-Max Preview, and What's Confirmed (2026) \u2014 Apsara Con"
+        },
+        {
+          "slug": "qwen4-max-preview",
+          "score": 0.604,
+          "preview": "usage on a frozen model \u2014 the docs promise no changes during the window \u2014 before the real family lands, and the expiry date caps what anyone"
+        },
+        {
+          "slug": "qwen4-max-preview",
+          "score": 0.591,
+          "preview": "September 22, Alibaba confirmed Qwen4 was in training on a new-generation architecture, with no date. On November 2, Qwen's head stated that"
+        }
+      ]
+    },
+    {
+      "id": 16,
+      "q": "How do I check whether my agent's tests actually catch bugs?",
+      "gold": "agent-tests-agree-with-bugs",
+      "top5": [
+        {
+          "slug": "agent-tests-agree-with-bugs",
+          "score": 0.631,
+          "preview": "apply to the fixed code: the fix removed the exact lines they targeted (the two <= boundaries and the expiry comparison), and the script rep"
+        },
+        {
+          "slug": "agent-tests-agree-with-bugs",
+          "score": 0.583,
+          "preview": "at a time, and counted how many breaks the suite noticed. Seven. The three it missed were all in the same function \u2014 the one the tests only "
+        },
+        {
+          "slug": "agent-tests-agree-with-bugs",
+          "score": 0.557,
+          "preview": "always the code. The agent reads the function, computes what it returns, and asserts exactly that. It is not being lazy; it is doing the job"
+        },
+        {
+          "slug": "agent-tests-agree-with-bugs",
+          "score": 0.554,
+          "preview": "unit tests green while a motor ran away; tests written to match the code locked in two bugs. - Claude Code issue 7074 \u2014 \"Claude Code manipul"
+        },
+        {
+          "slug": "agent-tests-agree-with-bugs",
+          "score": 0.549,
+          "preview": "in about ten minutes. That is the whole skill. The green check is a claim. Make the suite prove it. Sources - Banik, Chowdhury and Shamim, \""
+        }
+      ]
+    },
+    {
+      "id": 17,
+      "q": "Why do embeddings beat keyword search for finding similar meanings?",
+      "gold": "why-embeddings-make-search-work",
+      "top5": [
+        {
+          "slug": "why-embeddings-make-search-work",
+          "score": 0.621,
+          "preview": "documentation is the rare library doc that teaches while it configures. Putting it next to keyword search I do not think of embeddings as a "
+        },
+        {
+          "slug": "why-embeddings-make-search-work",
+          "score": 0.584,
+          "preview": "vectors get nudged closer. 4. After many examples, clusters appear \u2014 animals, vehicles, people. 5. Classic demo: king \u2212 man + woman \u2248 queen "
+        },
+        {
+          "slug": "why-embeddings-make-search-work",
+          "score": 0.57,
+          "preview": "Type \"bad guy in lord of the rings\" into a search box that only understands keywords, and you are gambling that the right page literally con"
+        },
+        {
+          "slug": "why-embeddings-make-search-work",
+          "score": 0.566,
+          "preview": "sparse vectors and BM25 Before we talk about neural nets, it helps to respect what keyword search already does well. Imagine every document "
+        },
+        {
+          "slug": "why-embeddings-make-search-work",
+          "score": 0.559,
+          "preview": "correlates with the similarity signal we trained for.\" If that signal matches your users' intent, search feels magical. If it does not, you "
+        }
+      ]
+    },
+    {
+      "id": 18,
+      "q": "What's the downside of giving an agent a memory system that watches everything it does?",
+      "gold": "claude-mem-agent-memory",
+      "top5": [
+        {
+          "slug": "claude-mem-agent-memory",
+          "score": 0.6,
+          "preview": "OpenCode, and eleven other agents \u2014 a memory that survives between sessions. It has more than 115,000 stars on GitHub, it topped GitHub's da"
+        },
+        {
+          "slug": "claude-mem-agent-memory",
+          "score": 0.508,
+          "preview": "a column: a new session opens with a short index of past decisions and fixes, the agent reads only the details it needs, and the work gets d"
+        },
+        {
+          "slug": "claude-mem-agent-memory",
+          "score": 0.493,
+          "preview": "point: the observer is cheap per call and constant per session, and it is a second meter running beside your own. On the Claude provider pat"
+        },
+        {
+          "slug": "claude-mem-agent-memory",
+          "score": 0.472,
+          "preview": "trial. Second, turn on redaction \u2014 38 built-in patterns plus four generic ones \u2014 in settings.json. Third, disable telemetry with the telemet"
+        },
+        {
+          "slug": "how-ai-reads-a-million-tokens",
+          "score": 0.467,
+          "preview": "The catch is that the cache grows with every token you feed in, in every layer. At a few thousand tokens nobody cares. At a million tokens, "
+        }
+      ]
+    },
+    {
+      "id": 19,
+      "q": "How many tokens does a sentence cost in different languages?",
+      "gold": "inside-gpt-tokenizer-vocabulary",
+      "top5": [
+        {
+          "slug": "inside-gpt-tokenizer-vocabulary",
+          "score": 0.685,
+          "preview": "35%. English word fragments are still the biggest single bucket, at 106,934 entries, but they are no longer the overwhelming majority. That "
+        },
+        {
+          "slug": "inside-gpt-tokenizer-vocabulary",
+          "score": 0.685,
+          "preview": "If you serve users who do not write in English: measure your own corpus with the tokenizer you actually ship. The library is small \u2014 tiktoke"
+        },
+        {
+          "slug": "inside-gpt-tokenizer-vocabulary",
+          "score": 0.679,
+          "preview": "1.6 times the tokens in Italian, 3 times in Arabic, and up to 15 times in Shan, on the ChatGPT/GPT-4 tokenizer. My numbers land in the same "
+        },
+        {
+          "slug": "inside-gpt-tokenizer-vocabulary",
+          "score": 0.636,
+          "preview": "at the last row. Amharic still costs 206 tokens for a sentence English says in 33 \u2014 more than six times as much. And the raw character count"
+        },
+        {
+          "slug": "inside-gpt-tokenizer-vocabulary",
+          "score": 0.614,
+          "preview": "than in English \u2014 check out against my numbers, and I'll say where my sample is too small to stand on its own. What a vocabulary actually is"
+        }
+      ]
+    },
+    {
+      "id": 20,
+      "q": "What should I do if my model's performance drops and the vendor says nothing changed?",
+      "gold": "is-opus-5-5-nerfed",
+      "top5": [
+        {
+          "slug": "is-opus-5-5-nerfed",
+          "score": 0.468,
+          "preview": "the model or effort changed, whether any task file changed, re-run once, and then switch to your fallback model and re-run. Only after all f"
+        },
+        {
+          "slug": "is-opus-5-5-nerfed",
+          "score": 0.449,
+          "preview": "only the bottom layer is supposed to stay frozen; a change in any of the other three feels exactly like a nerf. What a drop means, and what "
+        },
+        {
+          "slug": "is-opus-5-5-nerfed",
+          "score": 0.439,
+          "preview": "leaves that work out, and then you pay again to correct it. The retry right after a correction was itself corrected 41.5% of the time, again"
+        },
+        {
+          "slug": "is-opus-5-5-nerfed",
+          "score": 0.418,
+          "preview": "changes: a default effort cut from high to medium, a caching bug that repeatedly cleared prior thinking, and a system-prompt change to limit"
+        },
+        {
+          "slug": "is-opus-5-5-nerfed",
+          "score": 0.404,
+          "preview": "Half my timeline says Claude Opus 5.5 got nerfed. \"Nerfed\" is the word of the week \u2014 the one developers reach for when a model that was shar"
+        }
+      ]
+    },
+    {
+      "id": 21,
+      "q": "I trained a tiny model to tell jokes and it never tells a real joke. What went wrong?",
+      "gold": "tiny-gpt-cant-tell-jokes",
+      "top5": [
+        {
+          "slug": "tiny-gpt-cant-tell-jokes",
+          "score": 0.544,
+          "preview": "The loss curve looked great. After 1,500 training steps the loss had fallen from 4.55 \u2014 what random guessing over 95 characters scores \u2014 to "
+        },
+        {
+          "slug": "tiny-gpt-cant-tell-jokes",
+          "score": 0.537,
+          "preview": "5.262 to 5.225 , the best of the 40k-vocabulary runs \u2014 but only by 0.037, about half the resume effect (~0.07), so treat it as a small win, "
+        },
+        {
+          "slug": "tiny-gpt-cant-tell-jokes",
+          "score": 0.53,
+          "preview": "big one: complete 4% to 70%, while good never leaves zero. The pattern is the lesson. Every upgrade fixed the thing it was aimed at, and non"
+        },
+        {
+          "slug": "tiny-gpt-cant-tell-jokes",
+          "score": 0.528,
+          "preview": "model has shipped this bug. The loss is a useful instrument and a terrible judge. Read the outputs. Still frame: fifty samples in, zero good"
+        },
+        {
+          "slug": "tiny-gpt-cant-tell-jokes",
+          "score": 0.502,
+          "preview": "a twist. Nothing in the training signal says \"the ending has to change what the beginning meant\". That is what 0 of 50 is telling me, four t"
+        }
+      ]
+    },
+    {
+      "id": 22,
+      "q": "How do you judge whether a tiny model\u2019s outputs are actually jokes?",
+      "gold": "tiny-gpt-cant-tell-jokes",
+      "top5": [
+        {
+          "slug": "tiny-gpt-cant-tell-jokes",
+          "score": 0.561,
+          "preview": "5.262 to 5.225 , the best of the 40k-vocabulary runs \u2014 but only by 0.037, about half the resume effect (~0.07), so treat it as a small win, "
+        },
+        {
+          "slug": "tiny-gpt-cant-tell-jokes",
+          "score": 0.483,
+          "preview": "big one: complete 4% to 70%, while good never leaves zero. The pattern is the lesson. Every upgrade fixed the thing it was aimed at, and non"
+        },
+        {
+          "slug": "tiny-gpt-cant-tell-jokes",
+          "score": 0.48,
+          "preview": "a setup and a punchline. It reads as a joke even if the joke is weak. A grammatical sentence that is not a joke fails here. Good means all t"
+        },
+        {
+          "slug": "tiny-gpt-cant-tell-jokes",
+          "score": 0.473,
+          "preview": "model has shipped this bug. The loss is a useful instrument and a terrible judge. Read the outputs. Still frame: fifty samples in, zero good"
+        },
+        {
+          "slug": "tiny-gpt-cant-tell-jokes",
+          "score": 0.463,
+          "preview": "was never the number that mattered. The setup: a tiny GPT, 15,000 jokes, no GPU The model is a small GPT in the style of Andrej Karpathy's n"
+        }
+      ]
+    }
+  ]
+}
