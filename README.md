@@ -32,6 +32,8 @@ from reciprocal rank fusion (k = 60) loses to pure embeddings, 77% against
 a standalone script in `data/embeddings/`, not wired into the API — the
 service stays model-free.
 
+The fourth experiment (sanoj.dev post ["What 0.7 actually means: cosine similarity, measured"](https://sanoj.dev/blog/what-0-7-actually-means/)) calibrates the cosine scale itself on the same model, corpus, and questions: unrelated sentences average 0.11, paraphrases 0.67–0.91, and at retrieval time the best chunk that answers nothing (0.52) outscores the best chunk that answers the question (0.51) — no threshold separates them. See [Cosine experiment](#cosine-experiment) below. It ships as a standalone script in `data/anisotropy/`, not wired into the API — the service stays model-free.
+
 ## Quickstart
 
 Requires Python 3.11+.
@@ -202,6 +204,26 @@ python data/embeddings/measure-embeddings.py
 It writes `data/embeddings/results.json`. Full notes in
 [`data/embeddings/README.md`](data/embeddings/README.md).
 
+## Cosine experiment
+
+The 2026-11-26 follow-up calibrates the cosine scale itself: same model (`sentence-transformers/all-MiniLM-L6-v2`), same 16-post corpus, same 22 golden questions — but instead of ranking, it measures what a score means. Corpus: 1,749 sentences and 229 non-overlapping 200-word chunks (note: the embeddings experiment used overlapping windows, 281 chunks, so the ranks here are not directly comparable to its 82%). The snapshot lives in `data/anisotropy/` (script, reference results, plot data).
+
+Headline numbers (exact):
+
+- Sentence pairs: unrelated (different posts) 0.11 mean; same post 0.20; hand-written paraphrases 0.67–0.91; near-duplicates 0.98.
+- The shared component: the mean sentence vector has norm 0.34 (0.49 for chunks); 0.34² = 0.116 predicts the unrelated-pair floor, measured 0.11. The shared direction is diffuse — the top dimension holds 2.6% of its energy, not a few rogue dimensions.
+- Mean-centering moves unrelated pairs 0.11 → −0.01 (0 = unrelated) but barely changes the separation (0.09 → 0.10): it fixes the scale, not the ranking.
+- Question → chunk: background 0.14; best answering chunk 0.51, best non-answering chunk 0.52; the answer outscores the best wrong chunk in only 10 of 22 questions. At a 0.5 threshold 12 answering and 13 wrong chunks pass; at 0.7, 1 and 0. No threshold separates right from wrong.
+
+Run it (needs `sentence-transformers` + `torch`, deliberately not in `requirements.txt` — the API service stays model-free):
+
+```bash
+pip install sentence-transformers
+python data/anisotropy/measure-cosine.py
+```
+
+It writes `data/anisotropy/results.json` and `data/anisotropy/plot-data.json`. Full notes in [`data/anisotropy/README.md`](data/anisotropy/README.md).
+
 ## Replicating the experiment
 
 The corpus is bundled in `data/corpus/` (the 14 sanoj.dev blog posts, frontmatter
@@ -320,7 +342,7 @@ retriever-doc-answer/
     test_replication.py   # API output vs reference results.json
     test_chunking_service.py  # chunking strategies, unit level
     test_chunking_replication.py  # chunking output vs reference
-                           #   results-chunking.json
+                          #   results-chunking.json
 ```
 
 ## Architecture
