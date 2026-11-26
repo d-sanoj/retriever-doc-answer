@@ -342,7 +342,7 @@ retriever-doc-answer/
     test_replication.py   # API output vs reference results.json
     test_chunking_service.py  # chunking strategies, unit level
     test_chunking_replication.py  # chunking output vs reference
-                          #   results-chunking.json
+                           #   results-chunking.json
 ```
 
 ## Architecture
